@@ -7,11 +7,13 @@
 void print_char(char c)
 {
         write(1, &c, 1);
-}unsigned int print_string(char *str)
+}
+unsigned int print_string(char *str)
 {
         unsigned int i;        for (i = 0; str[i] != '\0'; i++);        write(1, str, i);
         return (i);
-}char *to_upper(char *str)
+}
+char *to_upper(char *str)
 {
         unsigned int i;
         char *upper;        for (i = 0; str[i] != '\0'; i++);        upper = malloc((i + 1) * sizeof(char));
@@ -22,7 +24,8 @@ void print_char(char c)
                         upper[i] = str[i] - 32;
         upper[i] = '\0';
         return (upper);
-}int _printf_custom(const char *format, ...)
+}
+int _printf_custom(const char *format, ...)
 {
         va_list args;
         unsigned int i, j;
@@ -38,8 +41,7 @@ void print_char(char c)
                         else if (format[i+1] == 'i' && format[i+2] == 's' && format[i+3] == 'a' && format[i+4] == 'l' && format[i+5] == 'p' && format[i+6] == 'h' && format[i+7] == 'a')
                                 j++;
                 }
-                                  }
-        }
+                }
         va_start(args, format);        j = 0;
         for (i = 0; format[i] != '\0'; i++)
         {
