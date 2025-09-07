@@ -2,9 +2,11 @@
 
 int main(void)
 {
-    _printf("Unsigned: %u\n", 12345);
-    _printf("Octal: %o\n", 12345);
-    _printf("Hex lowercase: %x\n", 12345);
-    _printf("Hex uppercase: %X\n", 12345);
+    int a = 42;
+    int *ptr = &a;
+
+    _printf("Address of a: %p\n", ptr);
+    _printf("NULL pointer: %p\n", NULL);
+
     return (0);
 }
