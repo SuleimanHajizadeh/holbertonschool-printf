@@ -2,37 +2,23 @@
 
 /**
  * print_number - prints an integer
- * @n: number to print
- *
+ * @n: integer
  * Return: number of characters printed
  */
 int print_number(int n)
 {
-	char buffer[12];
-	int i = 0, len = 0;
-	unsigned int num;
+    int count = 0;
 
-	if (n == 0)
-		return (write(1, "0", 1));
+    if (n < 0)
+    {
+        count += _putchar('-');
+        n = -n;
+    }
 
-	if (n < 0)
-	{
-		len += write(1, "-", 1);
-		num = -n;
-	}
-	else
-	{
-		num = n;
-	}
+    if (n / 10)
+        count += print_number(n / 10);
 
-	while (num > 0)
-	{
-		buffer[i++] = (num % 10) + '0';
-		num /= 10;
-	}
+    count += _putchar((n % 10) + '0');
 
-	while (i--)
-		len += write(1, &buffer[i], 1);
-
-	return (len);
+    return (count);
 }
