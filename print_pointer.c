@@ -1,23 +1,22 @@
 #include "main.h"
 
 /**
- * print_pointer - prints the value of a pointer in hexadecimal
+ * print_pointer - prints a pointer in full hexadecimal format
  * @ptr: pointer to print
- * @buffer: local buffer of 1024 chars
- * @buf_index: current index in the buffer
- * @count: total number of characters printed
+ * @buffer: buffer of 1024 chars
+ * @buf_index: pointer to current buffer index
+ * @count: pointer to total characters printed
  *
- * Return: updated buf_index
+ * Return: updated buffer index
  */
 int print_pointer(void *ptr, char *buffer, int *buf_index, int *count)
 {
     unsigned long n = (unsigned long)ptr;
 
-    /* print leading "0x" */
+    /* Print leading 0x */
     *buf_index = print_char('0', buffer, buf_index, count);
     *buf_index = print_char('x', buffer, buf_index, count);
 
-    /* print pointer value in lowercase hex */
     if (n == 0)
         *buf_index = print_char('0', buffer, buf_index, count);
     else
