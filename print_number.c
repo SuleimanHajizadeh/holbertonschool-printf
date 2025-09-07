@@ -2,44 +2,39 @@
 
 int print_number(int n, flags_t f, char *buffer, int *buf_index, int *count)
 {
-    unsigned int num;
+    unsigned int num, div;
+    int i, neg;
+
+    neg = 0;
     if (n < 0)
     {
-        buffer[*buf_index] = '-';
-        (*buf_index)++;
-        (*count)++;
+        neg = 1;
         num = -n;
     }
     else
-    {
         num = n;
-        if (f.plus)
-        {
-            buffer[*buf_index] = '+';
-            (*buf_index)++;
-            (*count)++;
-        }
-        else if (f.space)
-        {
-            buffer[*buf_index] = ' ';
-            (*buf_index)++;
-            (*count)++;
-        }
-    }
 
-    unsigned int div = 1000000000;
-    int started = 0;
-    for (; div; div /= 10)
+    if (!neg)
     {
-        int digit = num / div;
-        if (digit || started || div == 1)
-        {
-            buffer[*buf_index] = digit + '0';
-            (*buf_index)++;
-            (*count)++;
-            started = 1;
-        }
-        num %= div;
+        if (f.plus)
+            *buf_index = print_char('+', buffer, buf_index, count);
+        else if (f.space)
+            *buf_index = print_char(' ', buffer, buf_index, count);
     }
-    return *buf_index;
+    else
+        *buf_index = print_char('-', buffer, buf_index, count);
+
+    div = 1000000000;
+    i = 0;
+    while (div > 0)
+    {
+        if (num / div)
+            *buf_index = print_char('0' + (num / div) % 10, buffer, buf_index, count);
+        div /= 10;
+        i++;
+    }
+    if (i == 0)
+        *buf_index = print_char('0', buffer, buf_index, count);
+
+    return (*buf_index);
 }
