@@ -3,28 +3,24 @@
 int print_unsigned(unsigned int n, int base, int uppercase,
                    char *buffer, int *buf_index, int *count)
 {
-    char digits[] = "0123456789abcdef";
-    char DIGITS[] = "0123456789ABCDEF";
+    char *digits;
     unsigned int div;
-    int i, started;
+    int i, started = 0;
+    char temp[32];
 
-    div = 1;
-    while (div <= n / base)
-        div *= base;
+    digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
 
-    started = 0;
-    while (div)
+    if (n == 0)
+        return print_char('0', buffer, buf_index, count);
+
+    for (i = 0; n; i++)
     {
-        if (uppercase)
-            i = DIGITS[n / div];
-        else
-            i = digits[n / div];
-        *buf_index = print_char(i, buffer, buf_index, count);
-        n %= div;
-        div /= base;
+        temp[i] = digits[n % base];
+        n /= base;
     }
-    if (!started)
-        *buf_index = print_char('0', buffer, buf_index, count);
+
+    for (--i; i >= 0; i--)
+        *buf_index = print_char(temp[i], buffer, buf_index, count);
 
     return (*buf_index);
 }

@@ -1,21 +1,15 @@
 #include "main.h"
 
-int print_binary(unsigned int n, char *buffer, int *buf_index, int *count)
+int print_pointer(void *ptr, char *buffer, int *buf_index, int *count)
 {
-    int bin[32];
-    int i, j;
+    unsigned long addr;
 
-    i = 0;
-    if (n == 0)
-        *buf_index = print_char('0', buffer, buf_index, count);
-    while (n > 0)
-    {
-        bin[i] = n % 2;
-        n /= 2;
-        i++;
-    }
-    for (j = i - 1; j >= 0; j--)
-        *buf_index = print_char('0' + bin[j], buffer, buf_index, count);
+    if (!ptr)
+        return print_string("(nil)", buffer, buf_index, count);
+
+    addr = (unsigned long)ptr;
+    *buf_index = print_string("0x", buffer, buf_index, count);
+    *buf_index = print_unsigned(addr, 16, 0, buffer, buf_index, count);
 
     return (*buf_index);
 }
