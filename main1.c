@@ -1,7 +1,7 @@
-#include "main.h"
-#include <stdio.h>int main(void)
+#include <stdio.h>
+
+int main(void)
 {
-        unsigned int i;        i = _printf_custom("Char: %c Str: %upper\n", 'c', "salam");
-        printf("Count: %d\n", i);
-        return (0);
+    _printf("Hello, %s! Number: %d, Binary: %b\n", "world", 98, 5);
+    return (0);
 }
