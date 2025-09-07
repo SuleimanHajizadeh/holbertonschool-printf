@@ -1,5 +1,6 @@
 #include "main.h"
 #include <stdarg.h>
+#include <unistd.h>
 
 /**
  * _printf - produces output according to a format
@@ -10,12 +11,13 @@
 int _printf(const char *format, ...)
 {
     va_list args;
-    int i, count = 0;
-
-    va_start(args, format);
+    char buffer[1024];
+    int i, count = 0, buf_index = 0;
 
     if (!format)
         return (-1);
+
+    va_start(args, format);
 
     for (i = 0; format[i] != '\0'; i++)
     {
@@ -23,34 +25,38 @@ int _printf(const char *format, ...)
         {
             i++;
             if (format[i] == 'c')
-                count += print_char(va_arg(args, int));
+                buf_index = print_char(va_arg(args, int), buffer, &buf_index, &count);
             else if (format[i] == 's')
-                count += print_string(va_arg(args, char *));
+                buf_index = print_string(va_arg(args, char *), buffer, &buf_index, &count);
             else if (format[i] == '%')
-                count += print_char('%');
+                buf_index = print_char('%', buffer, &buf_index, &count);
             else if (format[i] == 'd' || format[i] == 'i')
-                count += print_number(va_arg(args, int));
+                buf_index = print_number(va_arg(args, int), buffer, &buf_index, &count);
             else if (format[i] == 'b')
-                count += print_binary(va_arg(args, unsigned int));
+                buf_index = print_binary(va_arg(args, unsigned int), buffer, &buf_index, &count);
             else if (format[i] == 'u')
-                count += print_unsigned(va_arg(args, unsigned int), 10, 0);
+                buf_index = print_unsigned(va_arg(args, unsigned int), 10, 0, buffer, &buf_index, &count);
             else if (format[i] == 'o')
-                count += print_unsigned(va_arg(args, unsigned int), 8, 0);
+                buf_index = print_unsigned(va_arg(args, unsigned int), 8, 0, buffer, &buf_index, &count);
             else if (format[i] == 'x')
-                count += print_unsigned(va_arg(args, unsigned int), 16, 0);
+                buf_index = print_unsigned(va_arg(args, unsigned int), 16, 0, buffer, &buf_index, &count);
             else if (format[i] == 'X')
-                count += print_unsigned(va_arg(args, unsigned int), 16, 1);
+                buf_index = print_unsigned(va_arg(args, unsigned int), 16, 1, buffer, &buf_index, &count);
             else
             {
-                count += print_char('%');
-                count += print_char(format[i]);
+                buf_index = print_char('%', buffer, &buf_index, &count);
+                buf_index = print_char(format[i], buffer, &buf_index, &count);
             }
         }
         else
         {
-            count += print_char(format[i]);
+            buf_index = print_char(format[i], buffer, &buf_index, &count);
         }
     }
+
+    /* Flush remaining buffer */
+    if (buf_index > 0)
+        write(1, buffer, buf_index);
 
     va_end(args);
     return (count);
