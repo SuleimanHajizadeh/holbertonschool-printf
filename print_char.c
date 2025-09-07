@@ -1,15 +1,6 @@
 #include "main.h"
 #include <unistd.h>
 
-/**
- * print_char - add a character to buffer
- * @c: char to add
- * @buffer: local buffer
- * @buf_index: current buffer index
- * @count: total printed count
- *
- * Return: new buffer index
- */
 int print_char(char c, char *buffer, int *buf_index, int *count)
 {
     buffer[*buf_index] = c;
