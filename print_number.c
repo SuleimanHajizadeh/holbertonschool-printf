@@ -1,20 +1,45 @@
 #include "main.h"
 
-int print_number(int n, char *buffer, int *buf_index, int *count)
+int print_number(int n, flags_t f, char *buffer, int *buf_index, int *count)
 {
     unsigned int num;
     if (n < 0)
     {
-        *buf_index = print_char('-', buffer, buf_index, count);
+        buffer[*buf_index] = '-';
+        (*buf_index)++;
+        (*count)++;
         num = -n;
     }
     else
+    {
         num = n;
+        if (f.plus)
+        {
+            buffer[*buf_index] = '+';
+            (*buf_index)++;
+            (*count)++;
+        }
+        else if (f.space)
+        {
+            buffer[*buf_index] = ' ';
+            (*buf_index)++;
+            (*count)++;
+        }
+    }
 
-    if (num / 10)
-        *buf_index = print_number(num / 10, buffer, buf_index, count);
-
-    *buf_index = print_char((num % 10) + '0', buffer, buf_index, count);
-
-    return (*buf_index);
+    unsigned int div = 1000000000;
+    int started = 0;
+    for (; div; div /= 10)
+    {
+        int digit = num / div;
+        if (digit || started || div == 1)
+        {
+            buffer[*buf_index] = digit + '0';
+            (*buf_index)++;
+            (*count)++;
+            started = 1;
+        }
+        num %= div;
+    }
+    return *buf_index;
 }

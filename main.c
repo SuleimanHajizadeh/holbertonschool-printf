@@ -2,7 +2,6 @@
 
 int main(void)
 {
-    int x = 42;
-    _printf("Pointer value: %p\n", &x);
+    _printf("%+d % d %#x %#X %#o\n", 42, 42, 48879, 48879, 48879);
     return 0;
 }
