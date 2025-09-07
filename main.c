@@ -2,11 +2,7 @@
 
 int main(void)
 {
-    int a = 42;
-    int *ptr = &a;
-
-    _printf("Address of a: %p\n", ptr);
-    _printf("NULL pointer: %p\n", NULL);
-
-    return (0);
+    int x = 42;
+    _printf("Pointer value: %p\n", &x);
+    return 0;
 }
