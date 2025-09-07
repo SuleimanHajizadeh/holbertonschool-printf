@@ -1,18 +1,20 @@
 #include "main.h"
+#include <unistd.h>
 
-/**
- * print_binary - prints an unsigned int in binary
- * @n: number
- * Return: number of digits printed
- */
-int print_binary(unsigned int n)
+int print_binary(unsigned int n, char *buffer, int *buf_index, int *count)
 {
-    int count = 0;
+    if (n > 1)
+        print_binary(n / 2, buffer, buf_index, count);
 
-    if (n / 2)
-        count += print_binary(n / 2);
+    buffer[*buf_index] = (n % 2) + '0';
+    (*buf_index)++;
+    (*count)++;
 
-    count += _putchar((n % 2) + '0');
+    if (*buf_index == 1024)
+    {
+        write(1, buffer, *buf_index);
+        *buf_index = 0;
+    }
 
-    return (count);
+    return (*buf_index);
 }

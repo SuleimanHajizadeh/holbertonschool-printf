@@ -1,32 +1,44 @@
 #include "main.h"
+#include <unistd.h>
 
-/**
- * print_unsigned - prints an unsigned int in any base
- * @n: number to print
- * @base: base to convert to (8, 10, 16)
- * @uppercase: 1 if uppercase hex, 0 if lowercase
- *
- * Return: number of characters printed
- */
-int print_unsigned(unsigned int n, int base, int uppercase)
+int print_unsigned(unsigned int n, int base, int uppercase,
+                   char *buffer, int *buf_index, int *count)
 {
-    char buffer[50];
-    char *digits;
-    int i = 0, count = 0;
-
-    digits = (uppercase) ? "0123456789ABCDEF" : "0123456789abcdef";
+    char digits[] = "0123456789abcdef";
+    char upper_digits[] = "0123456789ABCDEF";
+    char tmp[32];
+    int i = 0;
 
     if (n == 0)
-        return (print_char('0'));
+    {
+        buffer[*buf_index] = '0';
+        (*buf_index)++;
+        (*count)++;
+        if (*buf_index == 1024)
+        {
+            write(1, buffer, *buf_index);
+            *buf_index = 0;
+        }
+        return (*buf_index);
+    }
 
     while (n > 0)
     {
-        buffer[i++] = digits[n % base];
+        tmp[i++] = uppercase ? upper_digits[n % base] : digits[n % base];
         n /= base;
     }
 
     while (i--)
-        count += print_char(buffer[i]);
+    {
+        buffer[*buf_index] = tmp[i];
+        (*buf_index)++;
+        (*count)++;
+        if (*buf_index == 1024)
+        {
+            write(1, buffer, *buf_index);
+            *buf_index = 0;
+        }
+    }
 
-    return (count);
+    return (*buf_index);
 }

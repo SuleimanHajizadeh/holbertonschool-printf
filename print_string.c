@@ -1,15 +1,15 @@
 #include "main.h"
+#include <unistd.h>
+#include <stddef.h>
 
 int print_string(char *s, char *buffer, int *buf_index, int *count)
 {
-    int i;
-
     if (s == NULL)
         s = "(null)";
 
-    for (i = 0; s[i] != '\0'; i++)
+    while (*s)
     {
-        buffer[*buf_index] = s[i];
+        buffer[*buf_index] = *s++;
         (*buf_index)++;
         (*count)++;
 
@@ -19,6 +19,5 @@ int print_string(char *s, char *buffer, int *buf_index, int *count)
             *buf_index = 0;
         }
     }
-
     return (*buf_index);
 }

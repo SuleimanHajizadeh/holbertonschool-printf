@@ -1,24 +1,41 @@
 #include "main.h"
+#include <unistd.h>
 
-/**
- * print_number - prints an integer
- * @n: integer
- * Return: number of characters printed
- */
-int print_number(int n)
+int print_number(int n, char *buffer, int *buf_index, int *count)
 {
-    int count = 0;
+    unsigned int num;
 
     if (n < 0)
     {
-        count += _putchar('-');
-        n = -n;
+        buffer[*buf_index] = '-';
+        (*buf_index)++;
+        (*count)++;
+
+        if (*buf_index == 1024)
+        {
+            write(1, buffer, *buf_index);
+            *buf_index = 0;
+        }
+
+        num = -n;
+    }
+    else
+    {
+        num = n;
     }
 
-    if (n / 10)
-        count += print_number(n / 10);
+    if (num / 10)
+        print_number(num / 10, buffer, buf_index, count);
 
-    count += _putchar((n % 10) + '0');
+    buffer[*buf_index] = (num % 10) + '0';
+    (*buf_index)++;
+    (*count)++;
 
-    return (count);
+    if (*buf_index == 1024)
+    {
+        write(1, buffer, *buf_index);
+        *buf_index = 0;
+    }
+
+    return (*buf_index);
 }
