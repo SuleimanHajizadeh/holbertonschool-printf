@@ -6,7 +6,7 @@ int print_char(char c, char *buffer, int *buf_index, int *count)
     (*buf_index)++;
     (*count)++;
 
-    if (*buf_index == 1024)
+    if (*buf_index >= 1024)
     {
         write(1, buffer, *buf_index);
         *buf_index = 0;
