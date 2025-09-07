@@ -1,58 +1,28 @@
 #include "main.h"
-#include <unistd.h>
-#include <stddef.h>
 
-/**
- * print_S - prints a string, replacing non-printable characters
- * with \xHH format (uppercase hex, always 2 chars)
- * @s: input string
- * @buffer: buffer array
- * @buf_index: pointer to buffer index
- * @count: pointer to printed characters count
- *
- * Return: updated buffer index
- */
 int print_S(char *s, char *buffer, int *buf_index, int *count)
 {
-    char hex[] = "0123456789ABCDEF";
-    unsigned char c;
+    int i;
+    char hex[3];
 
-    if (s == NULL)
+    if (!s)
         s = "(null)";
 
-    while (*s)
+    for (i = 0; s[i]; i++)
     {
-        c = (unsigned char)*s;
-        if (c < 32 || c >= 127)
+        if ((s[i] > 0 && s[i] < 32) || s[i] >= 127)
         {
-            /* Print \x */
-            buffer[(*buf_index)++] = '\\';
-            buffer[(*buf_index)++] = 'x';
-            (*count) += 2;
-
-            if (*buf_index >= 1024)
-            {
-                write(1, buffer, *buf_index);
-                *buf_index = 0;
-            }
-
-            /* Print two hex digits */
-            buffer[(*buf_index)++] = hex[c / 16];
-            buffer[(*buf_index)++] = hex[c % 16];
-            (*count) += 2;
+            *buf_index = print_char('\\', buffer, buf_index, count);
+            *buf_index = print_char('x', buffer, buf_index, count);
+            hex[0] = "0123456789ABCDEF"[s[i] / 16];
+            hex[1] = "0123456789ABCDEF"[s[i] % 16];
+            hex[2] = '\0';
+            *buf_index = print_char(hex[0], buffer, buf_index, count);
+            *buf_index = print_char(hex[1], buffer, buf_index, count);
         }
         else
-        {
-            buffer[(*buf_index)++] = c;
-            (*count)++;
-        }
-
-        if (*buf_index >= 1024)
-        {
-            write(1, buffer, *buf_index);
-            *buf_index = 0;
-        }
-        s++;
+            *buf_index = print_char(s[i], buffer, buf_index, count);
     }
+
     return (*buf_index);
 }

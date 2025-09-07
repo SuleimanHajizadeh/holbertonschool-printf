@@ -1,5 +1,4 @@
 #include "main.h"
-#include <unistd.h>
 
 int print_char(char c, char *buffer, int *buf_index, int *count)
 {
