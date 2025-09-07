@@ -7,6 +7,7 @@ int _printf(const char *format, ...)
     char buffer[1024];
     int buf_index, count, i;
     char ch;
+    length_t length;
 
     buf_index = 0;
     count = 0;
@@ -22,7 +23,19 @@ int _printf(const char *format, ...)
         if (format[i] == '%')
         {
             i++;
-            /* flags_t f = get_flags(format, &i); unused for now */
+            length = NONE;
+
+            /* Check length modifiers */
+            if (format[i] == 'l')
+            {
+                length = LONG;
+                i++;
+            }
+            else if (format[i] == 'h')
+            {
+                length = SHORT;
+                i++;
+            }
 
             switch (format[i])
             {
@@ -35,16 +48,29 @@ int _printf(const char *format, ...)
                     break;
                 case 'd':
                 case 'i':
-                    count += print_number(va_arg(args, int), buffer, &buf_index);
+                    if (length == LONG)
+                        count += print_number(va_arg(args, long), buffer, &buf_index);
+                    else if (length == SHORT)
+                        count += print_number((short)va_arg(args, int), buffer, &buf_index);
+                    else
+                        count += print_number(va_arg(args, int), buffer, &buf_index);
                     break;
                 case 'u':
-                    count += print_unsigned(va_arg(args, unsigned int), 10, 0, buffer, &buf_index);
-                    break;
+                case 'o':
                 case 'x':
-                    count += print_unsigned(va_arg(args, unsigned int), 16, 0, buffer, &buf_index);
-                    break;
                 case 'X':
-                    count += print_unsigned(va_arg(args, unsigned int), 16, 1, buffer, &buf_index);
+                    if (length == LONG)
+                        count += print_unsigned_long(va_arg(args, unsigned long),
+                                                    (format[i] == 'o' ? 8 : (format[i] == 'x' || format[i] == 'X') ? 16 : 10),
+                                                    (format[i] == 'X'), buffer, &buf_index);
+                    else if (length == SHORT)
+                        count += print_unsigned_long((unsigned short)va_arg(args, unsigned int),
+                                                    (format[i] == 'o' ? 8 : (format[i] == 'x' || format[i] == 'X') ? 16 : 10),
+                                                    (format[i] == 'X'), buffer, &buf_index);
+                    else
+                        count += print_unsigned_long(va_arg(args, unsigned int),
+                                                    (format[i] == 'o' ? 8 : (format[i] == 'x' || format[i] == 'X') ? 16 : 10),
+                                                    (format[i] == 'X'), buffer, &buf_index);
                     break;
                 case 'p':
                     count += print_pointer(va_arg(args, void *), buffer, &buf_index);

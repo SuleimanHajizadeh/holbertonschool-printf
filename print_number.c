@@ -1,8 +1,8 @@
 #include "main.h"
 
-int print_number(int n, char *buffer, int *buf_index)
+int print_number(long n, char *buffer, int *buf_index)
 {
-    unsigned int num;
+    unsigned long num;
     int len;
 
     len = 0;
