@@ -2,6 +2,9 @@
 
 int main(void)
 {
-    _printf("%b\n", 98);  /* expected output: 1100010 */
+    _printf("Unsigned: %u\n", 12345);
+    _printf("Octal: %o\n", 12345);
+    _printf("Hex lowercase: %x\n", 12345);
+    _printf("Hex uppercase: %X\n", 12345);
     return (0);
 }

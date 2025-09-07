@@ -7,5 +7,6 @@ int print_char(char c);
 int print_string(char *s);
 int print_number(int n);
 int print_binary(unsigned int n);
+int print_unsigned(unsigned int n, int base, int uppercase);
 
 #endif /* MAIN_H */
