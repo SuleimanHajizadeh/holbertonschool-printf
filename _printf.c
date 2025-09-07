@@ -7,22 +7,22 @@ int _printf(const char *format, ...)
     char buffer[1024];
     int buf_index, count, i;
     char ch;
-    flags_t f;
+
+    buf_index = 0;
+    count = 0;
+    i = 0;
 
     if (!format)
         return (-1);
 
     va_start(args, format);
-    buf_index = 0;
-    count = 0;
-    i = 0;
 
     while (format[i])
     {
         if (format[i] == '%')
         {
             i++;
-            f = get_flags(format, &i);
+            /* flags_t f = get_flags(format, &i); unused for now */
 
             switch (format[i])
             {
@@ -33,18 +33,12 @@ int _printf(const char *format, ...)
                 case 's':
                     count += print_string(va_arg(args, char *), buffer, &buf_index);
                     break;
-                case 'S':
-                    count += print_S(va_arg(args, char *), buffer, &buf_index);
-                    break;
                 case 'd':
                 case 'i':
                     count += print_number(va_arg(args, int), buffer, &buf_index);
                     break;
                 case 'u':
                     count += print_unsigned(va_arg(args, unsigned int), 10, 0, buffer, &buf_index);
-                    break;
-                case 'o':
-                    count += print_unsigned(va_arg(args, unsigned int), 8, 0, buffer, &buf_index);
                     break;
                 case 'x':
                     count += print_unsigned(va_arg(args, unsigned int), 16, 0, buffer, &buf_index);

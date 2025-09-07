@@ -5,17 +5,15 @@ int print_unsigned(unsigned int n, int base, int uppercase,
 {
     char digits[] = "0123456789abcdef";
     char digits_up[] = "0123456789ABCDEF";
+    int len = 0;
     unsigned int div;
-    int len;
 
     div = n / base;
-    len = 0;
 
     if (div)
         len += print_unsigned(div, base, uppercase, buffer, buf_index);
 
-    print_char((uppercase ? digits_up[n % base] : digits[n % base]),
+    print_char(uppercase ? digits_up[n % base] : digits[n % base],
                buffer, buf_index);
     return (len + 1);
 }
-

@@ -5,6 +5,7 @@ int print_number(int n, char *buffer, int *buf_index)
     unsigned int num;
     int len;
 
+    len = 0;
     if (n < 0)
     {
         print_char('-', buffer, buf_index);
@@ -12,10 +13,7 @@ int print_number(int n, char *buffer, int *buf_index)
         len = 1;
     }
     else
-    {
         num = n;
-        len = 0;
-    }
 
     if (num / 10)
         len += print_number(num / 10, buffer, buf_index);
