@@ -3,9 +3,10 @@
 /**
  * print_char - prints a single character
  * @c: character to print
- * Return: number of characters printed (always 1)
+ *
+ * Return: number of characters printed (1)
  */
 int print_char(char c)
 {
-    return (write(1, &c, 1));
+	return (write(1, &c, 1));
 }
