@@ -1,11 +1,15 @@
 #include "main.h"
 #include <stdarg.h>
+#include <unistd.h>
 
 #define BUF_SIZE 1024
 
 flags_t get_flags(const char *format, int *i)
 {
-    flags_t f = {0, 0, 0};
+    flags_t f;
+    f.plus = 0;
+    f.space = 0;
+    f.hash = 0;
 
     while (format[*i] == '+' || format[*i] == ' ' || format[*i] == '#')
     {
@@ -25,15 +29,18 @@ int _printf(const char *format, ...)
     va_list args;
     char buffer[BUF_SIZE];
     int buf_index = 0, count = 0;
+    int i;
+    flags_t f;
 
     va_start(args, format);
 
-    for (int i = 0; format[i]; i++)
+    i = 0;
+    while (format[i] != '\0')
     {
         if (format[i] == '%')
         {
             i++;
-            flags_t f = get_flags(format, &i);
+            f = get_flags(format, &i);
 
             if (format[i] == 'c')
                 buf_index = print_char(va_arg(args, int), buffer, &buf_index, &count);
@@ -53,13 +60,16 @@ int _printf(const char *format, ...)
                 buf_index = print_char('%', buffer, &buf_index, &count);
         }
         else
+        {
             buf_index = print_char(format[i], buffer, &buf_index, &count);
+        }
 
         if (buf_index >= BUF_SIZE - 1)
         {
             write(1, buffer, buf_index);
             buf_index = 0;
         }
+        i++;
     }
 
     if (buf_index > 0)
