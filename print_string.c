@@ -1,16 +1,27 @@
 #include "main.h"
-#include <stddef.h>
-#include <string.h>
 
+/**
+ * print_string - prints a string to buffer
+ * @s: string to print
+ * @buffer: local buffer
+ * @buf_index: current buffer index
+ * @count: total characters printed
+ *
+ * Return: updated buffer index
+ */
 int print_string(char *s, char *buffer, int *buf_index, int *count)
 {
+    int i;
+
     if (!s)
         s = "(null)";
-    for (int i = 0; s[i]; i++)
+
+    i = 0;
+    while (s[i])
     {
-        buffer[*buf_index] = s[i];
-        (*buf_index)++;
-        (*count)++;
+        *buf_index = print_char(s[i], buffer, buf_index, count);
+        i++;
     }
-    return *buf_index;
+
+    return (*buf_index);
 }
