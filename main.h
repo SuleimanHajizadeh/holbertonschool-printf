@@ -2,10 +2,9 @@
 #define MAIN_H
 
 #include <stdarg.h>
-#include <stddef.h>
 #include <unistd.h>
 
-/* _printf */
+/* _printf function */
 int _printf(const char *format, ...);
 
 /* Helper functions */
@@ -16,12 +15,14 @@ int print_unsigned_long(unsigned long n, int base, int uppercase,
                         char *buffer, int *buf_index);
 int print_pointer(void *p, char *buffer, int *buf_index);
 
-/* Length modifiers */
-typedef enum length
+/* Flag struct for +, space, # */
+typedef struct flags
 {
-    NONE,
-    SHORT,
-    LONG
-} length_t;
+    int plus;
+    int space;
+    int hash;
+} flags_t;
+
+flags_t get_flags(const char *format, int *i);
 
 #endif

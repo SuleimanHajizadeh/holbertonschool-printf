@@ -1,5 +1,6 @@
 #include "main.h"
 
+/* Get +, space, # flags */
 flags_t get_flags(const char *format, int *i)
 {
     flags_t f;

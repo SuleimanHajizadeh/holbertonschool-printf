@@ -19,5 +19,5 @@ int print_number(long n, char *buffer, int *buf_index)
         len += print_number(num / 10, buffer, buf_index);
 
     print_char((num % 10) + '0', buffer, buf_index);
-    return (len + 1);
+    return len + 1;
 }

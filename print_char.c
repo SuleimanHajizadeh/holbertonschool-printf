@@ -9,5 +9,5 @@ int print_char(char c, char *buffer, int *buf_index)
         write(1, buffer, 1024);
         *buf_index = 0;
     }
-    return (1);
+    return 1;
 }
