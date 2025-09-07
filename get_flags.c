@@ -2,8 +2,13 @@
 
 flags_t get_flags(const char *format, int *i)
 {
-    flags_t f = {0, 0, 0};
-    int j = *i;
+    flags_t f;
+    int j;
+
+    f.plus = 0;
+    f.space = 0;
+    f.hash = 0;
+    j = *i;
 
     while (format[j] == '+' || format[j] == ' ' || format[j] == '#')
     {

@@ -1,12 +1,12 @@
 #include "main.h"
-#include <unistd.h>
 
-int print_string(char *s, char *buffer, int *buf_index, int *count)
+int print_string(char *s, char *buffer, int *buf_index)
 {
-    int i = 0;
+    int i;
     if (!s)
         s = "(null)";
-    for (; s[i]; i++)
-        print_char(s[i], buffer, buf_index, count);
+
+    for (i = 0; s[i]; i++)
+        print_char(s[i], buffer, buf_index);
     return (i);
 }
