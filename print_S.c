@@ -1,29 +1,39 @@
 #include "main.h"
+#include <stdarg.h>
 
-int print_S(char *s, char *buffer, int *buf_index)
+/**
+ * print_S - prints string, non-printable chars as hex using buffer
+ * @args: va_list containing the string
+ * @buffer: buffer array
+ * @flags: active flags
+ * @width: width
+ * @precision: precision
+ * @size: size specifier
+ * Return: number of characters printed
+ */
+int print_S(va_list args, char buffer[], int flags, int width,
+            int precision, int size)
 {
-    int i, len;
-    char hex[] = "0123456789ABCDEF";
+    char *str = va_arg(args, char *);
+    int count = 0;
 
-    len = 0;
-    if (!s)
-        s = "(null)";
+    if (!str)
+        str = "(null)";
 
-    for (i = 0; s[i]; i++)
+    for (int i = 0; str[i]; i++)
     {
-        if (s[i] < 32 || s[i] >= 127)
+        if (str[i] < 32 || str[i] >= 127)
         {
-            print_char('\\', buffer, buf_index);
-            print_char('x', buffer, buf_index);
-            print_char(hex[(s[i] >> 4) & 0xF], buffer, buf_index);
-            print_char(hex[s[i] & 0xF], buffer, buf_index);
-            len += 4;
+            buffer[count++] = '\\';
+            buffer[count++] = 'x';
+            buffer[count++] = "0123456789ABCDEF"[str[i] / 16];
+            buffer[count++] = "0123456789ABCDEF"[str[i] % 16];
         }
         else
         {
-            print_char(s[i], buffer, buf_index);
-            len++;
+            buffer[count++] = str[i];
         }
     }
-    return (len);
+
+    return (handle_write_char(buffer, count, flags, width, precision, size));
 }

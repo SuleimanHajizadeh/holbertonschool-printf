@@ -1,7 +1,10 @@
 #include "main.h"
 
 /**
- * get_size - Calculates size
+ * get_size - calculates the size specifier
+ * @format: format string
+ * @i: pointer to current index
+ * Return: size constant
  */
 int get_size(const char *format, int *i)
 {
@@ -12,10 +15,10 @@ int get_size(const char *format, int *i)
         size = S_LONG;
     else if (format[curr_i] == 'h')
         size = S_SHORT;
-
-    if (size == 0)
-        *i = curr_i - 1;
     else
+        size = 0;
+
+    if (size != 0)
         *i = curr_i;
 
     return (size);

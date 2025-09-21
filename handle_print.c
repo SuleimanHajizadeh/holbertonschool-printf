@@ -1,21 +1,36 @@
 #include "main.h"
 
 /**
- * handle_print - Handles specifiers
+ * handle_print - selects correct printing function
+ * @fmt: format character
+ * @args: arguments list
+ * @buffer: buffer array
+ * @flags: active flags
+ * @width: width
+ * @precision: precision
+ * @size: size specifier
+ * Return: number of characters printed
  */
-int handle_print(const char *fmt, int *i, va_list list,
-    char buffer[], int flags, int width, int precision, int size)
+int handle_print(const char fmt, va_list args, char buffer[],
+                 int flags, int width, int precision, int size)
 {
-    int j;
+    int i, printed = 0;
     fmt_t fmt_types[] = {
         {'c', print_char}, {'s', print_string}, {'%', print_percent},
-        {'d', print_number}, {'i', print_number},
+        {'d', print_int}, {'i', print_int}, {'b', print_binary},
+        {'u', print_unsigned}, {'o', print_octal}, {'x', print_hex},
+        {'X', print_HEX}, {'S', print_S}, {'p', print_pointer},
         {'\0', NULL}
     };
 
-    for (j = 0; fmt_types[j].fmt != '\0'; j++)
-        if (fmt[*i] == fmt_types[j].fmt)
-            return (fmt_types[j].fn(list, buffer, flags, width, precision, size));
+    for (i = 0; fmt_types[i].fmt != '\0'; i++)
+    {
+        if (fmt == fmt_types[i].fmt)
+        {
+            printed = fmt_types[i].fn(args, buffer, flags, width, precision, size);
+            break;
+        }
+    }
 
-    return (-1);
+    return (printed);
 }
