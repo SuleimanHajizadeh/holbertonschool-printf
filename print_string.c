@@ -1,11 +1,20 @@
 #include "main.h"
 
-int print_string(char *s, char *buffer, int *buf_index)
+/**
+ * print_string - prints a string
+ */
+int print_string(va_list types, char buffer[],
+    int flags, int width, int precision, int size)
 {
-    int i;
-    if (!s)
-        s = "(null)";
-    for (i = 0; s[i]; i++)
-        print_char(s[i], buffer, buf_index);
-    return i;
+    char *str = va_arg(types, char *);
+    int len = 0;
+
+    if (!str)
+        str = "(null)";
+
+    while (str[len])
+        len++;
+
+    write(1, str, len);
+    return (len);
 }

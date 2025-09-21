@@ -1,23 +1,22 @@
 #include "main.h"
 
-int print_number(long n, char *buffer, int *buf_index)
+/**
+ * print_number - prints integers
+ */
+int print_number(va_list types, char buffer[],
+    int flags, int width, int precision, int size)
 {
-    unsigned long num;
-    int len;
+    int n = va_arg(types, int);
+    char str[50];
+    int i = 0, len;
+
+    sprintf(str, "%d", n);
 
     len = 0;
-    if (n < 0)
-    {
-        print_char('-', buffer, buf_index);
-        num = -n;
-        len = 1;
-    }
-    else
-        num = n;
+    while (str[len])
+        len++;
 
-    if (num / 10)
-        len += print_number(num / 10, buffer, buf_index);
+    write(1, str, len);
 
-    print_char((num % 10) + '0', buffer, buf_index);
-    return len + 1;
+    return (len);
 }

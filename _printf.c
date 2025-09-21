@@ -1,53 +1,55 @@
 #include "main.h"
 
+/**
+ * _printf - Custom printf implementation
+ */
 int _printf(const char *format, ...)
 {
+    int i, count = 0, printed = 0;
+    int flags, width, precision, size, buf_index = 0;
     va_list args;
     char buffer[1024];
-    int buf_index = 0, count = 0, i = 0;
-    char ch;
-    flags_t f;
 
     if (!format)
-        return -1;
+        return (-1);
 
     va_start(args, format);
 
-    while (format[i])
+    for (i = 0; format[i] != '\0'; i++)
     {
-        if (format[i] == '%')
+        if (format[i] != '%')
         {
-            i++;
-            f = get_flags(format, &i);
-
-            switch (format[i])
+            buffer[buf_index++] = format[i];
+            if (buf_index == 1024)
             {
-                case 'c':
-                    ch = va_arg(args, int);
-                    count += print_char(ch, buffer, &buf_index);
-                    break;
-                case 's':
-                    count += print_string(va_arg(args, char *), buffer, &buf_index);
-                    break;
-                case 'd':
-                case 'i':
-                    count += print_number(va_arg(args, int), buffer, &buf_index, f);
-                    break;
-                case '%':
-                    count += print_char('%', buffer, &buf_index);
-                    break;
+                write(1, buffer, buf_index);
+                buf_index = 0;
             }
+            count++;
         }
         else
         {
-            count += print_char(format[i], buffer, &buf_index);
+            int j = i + 1;
+
+            flags = get_flags(format, &j);
+            width = get_width(format, &j, args);
+            precision = get_precision(format, &j, args);
+            size = get_size(format, &j);
+
+            ++j;
+            printed = handle_print(format, &j, args, buffer,
+                                   flags, width, precision, size);
+            if (printed == -1)
+                return (-1);
+            count += printed;
+            i = j;
         }
-        i++;
     }
 
-    if (buf_index)
+    if (buf_index > 0)
         write(1, buffer, buf_index);
 
     va_end(args);
-    return count;
+
+    return (count);
 }
