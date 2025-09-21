@@ -6,7 +6,6 @@ SRC = _printf.c check_prtr.c helpers.c \
       main_test.c
 OBJ = $(SRC:.c=.o)
 NAME = printf_test
-RM = rm -f
 
 all: $(NAME)
 
@@ -14,9 +13,9 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	$(RM) $(OBJ)
+	rm -f $(OBJ)
 
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
