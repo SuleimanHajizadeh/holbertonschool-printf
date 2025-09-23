@@ -2,21 +2,21 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-int func_R(char *buff, int count, va_list value, int flags)
+int func_r(char *buff, int count, va_list value, int flags)
 {
     char *str = va_arg(value, char *);
-    char *encoded_str;
+    char *rev_str;
     (void)flags;
 
     if (!str)
         str = "(null)";
 
-    encoded_str = malloc(_strlen(str) + 1);
-    _strcpy(encoded_str, str);
-    _rot13(encoded_str);
+    rev_str = malloc(_strlen(str) + 1);
+    _strcpy(rev_str, str);
+    _rev_ptr(rev_str);
 
-    count = _assign(&buff[count], 0, encoded_str);
-    free(encoded_str);
+    count = _assign(&buff[count], 0, rev_str);
+    free(rev_str);
 
     return count;
 }
