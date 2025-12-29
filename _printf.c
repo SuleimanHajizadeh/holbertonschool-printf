@@ -1,57 +1,68 @@
-#include "main.h"
 #include <stdarg.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include "main.h"
 
+/**
+ * _printf - prints formatted output
+ * @format: format string
+ *
+ * Return: number of characters printed
+ */
 int _printf(const char *format, ...)
 {
-    char *buff;
-    int i = 0, count = 0, flags;
-    va_list arg_value;
-    func_ptr_t func;
+	va_list args;
+	int i = 0, count = 0;
+	char c;
+	char *s;
 
-    if (!format)
-        return (-1);
+	if (!format)
+		return (-1);
 
-    buff = malloc(4000);
-    if (!buff)
-        return (-1);
+	va_start(args, format);
 
-    va_start(arg_value, format);
+	while (format[i])
+	{
+		if (format[i] != '%')
+		{
+			write(1, &format[i], 1);
+			count++;
+		}
+		else
+		{
+			i++;
+			if (format[i] == 'c')
+			{
+				c = (char)va_arg(args, int);
+				write(1, &c, 1);
+				count++;
+			}
+			else if (format[i] == 's')
+			{
+				s = va_arg(args, char *);
+				if (!s)
+					s = "(null)";
+				while (*s)
+				{
+					write(1, s, 1);
+					s++;
+					count++;
+				}
+			}
+			else if (format[i] == '%')
+			{
+				write(1, "%", 1);
+				count++;
+			}
+			else
+			{
+				write(1, "%", 1);
+				write(1, &format[i], 1);
+				count += 2;
+			}
+		}
+		i++;
+	}
 
-    while (format[i])
-    {
-        flags = 0;
-        if (format[i] != '%')
-        {
-            buff[count++] = format[i++];
-            continue;
-        }
-
-        i++; /* skip '%' */
-
-        /* Check for flags */
-        if (format[i] == '+')
-        {
-            flags |= FLAG_PLUS;
-            i++;
-        }
-
-        func = check_prtr(format[i]);
-        if (!func)
-        {
-            buff[count++] = '%';
-            buff[count++] = format[i++];
-            continue;
-        }
-
-        count = func(&buff[count], count, arg_value, flags);
-        i++;
-    }
-
-    write(1, buff, count);
-    va_end(arg_value);
-    free(buff);
-
-    return count;
+	va_end(args);
+	return (count);
 }
