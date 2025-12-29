@@ -23,6 +23,7 @@ typedef struct ptr
 /* _printf & Checker */
 int _printf(const char *format, ...);
 func_ptr_t check_prtr(char specifier);
+int _putchar(char c);
 
 /* FUNC_* HANDLERS */
 int func_d(char *buff, int count, va_list value, int flags);
