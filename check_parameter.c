@@ -1,37 +1,28 @@
 #include "main.h"
+#include <stdarg.h>
 
-/**
- * *check_prtr - parameter checker
- * @specifier: str var
- * Return: int
- */
+/* Example function pointer typedef */
+typedef int (*func_ptr_t)(char *, int, va_list, int);
 
-int (*check_prtr(char specifier))(char *, int, va_list)
+func_ptr_t check_prtr(char specifier)
 {
-	int j = 0;
+    int i;
+    struct param {
+        char c;
+        func_ptr_t f;
+    } arg_ptr[] = {
+        {'c', func_c},
+        {'s', func_s},
+        {'%', func_ptg},
+        {0, NULL}
+    };
 
-	ptr_ch arg_ptr[] = {
-		{"d", func_d},
-		{"i", func_i},
-		{"u", func_u},
-		{"o", func_o},
-		{"x", func_x},
-		{"X", func_X},
-		{"c", func_c},
-		{"s", func_s},
-		{"%", func_ptg},
-		{"b", func_b},
-		{"r", func_r},
-		{"R", func_R},
-		{NULL, NULL}
-	};
-
-	while (arg_ptr[j].c)
-	{
-		if (specifier == *arg_ptr[j].c)
-			break;
-		j++;
-	}
-
-	return (arg_ptr[j].f);
+    i = 0;
+    while (arg_ptr[i].c)
+    {
+        if (arg_ptr[i].c == specifier)
+            return (arg_ptr[i].f);
+        i++;
+    }
+    return (NULL);
 }

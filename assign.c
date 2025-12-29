@@ -1,36 +1,19 @@
 #include "main.h"
 
-int _assign(char *buff, int count, char *value)
+/**
+ * _rev_assign - reverse copy string
+ */
+void _rev_assign(char *buff, char *value)
 {
-    int i = 0;
-    while (value[i])
+    int len, i, j;
 
-        buff[i++] = value[i++];
-    return count + _strlen(value);
-
+    len = _strlen(value);
+    i = 0;
+    j = len - 1;
+    while (j >= 0)
     {
-        buff[i] = value[i];
-        count++;
+        buff[i] = value[j];
         i++;
+        j--;
     }
-    return count;
-
-}
-
-int _rev_assign(char *buff, int count, char *value)
-{
-
-    int len = _strlen(value), i;
-    for (i = 0; i < len; i++)
-        buff[i] = value[len - i - 1];
-    return count + len;
-
-    int len = _strlen(value);
-    int i;
-    for (i = 0; i <= len; i++)
-    {
-        buff[i] = value[len - i];
-        count++;
-    }
-    return count;
 }
