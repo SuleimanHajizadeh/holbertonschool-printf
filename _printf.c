@@ -1,51 +1,75 @@
 #include "main.h"
 
 /**
- * _printf - function that produces output according to a format.
- * @format: Is an string with the sentences or plain text to print.
+ * handle_format - Handles format specifiers
+ * @format: Format specifier
+ * @args: List of arguments
  *
- * Return: The lenght of all sentences and plain text.
+ * Return: Number of characters printed
+ */
+int handle_format(const char format, va_list args)
+{
+	int count = 0;
+
+	switch (format)
+	{
+	case 'c':
+		count += _putchar(va_arg(args, int));
+		break;
+	case 's':
+		count += print_string(va_arg(args, char *));
+		break;
+	case '%':
+		count += _putchar('%');
+		break;
+	case 'd':
+	case 'i':
+		count += print_number(va_arg(args, int));
+		break;
+	default:
+		count += _putchar('%');
+		count += _putchar(format);
+		break;
+	}
+	return (count);
+}
+
+/**
+ * _printf - Custom printf function
+ * @format: Format string
+ *
+ * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
 {
-	int i, (*f_print)(va_list), length_full = 0;
-	va_list arg_list;
+	int count = 0;
+	va_list args;
 
-	if (format)
-	{
-		va_start(arg_list, format);
-		for (i = 0; format[i]; i++)
-		{
-			if (format[i] == '%' && format[i + 1])
-			{
-				if (format[i + 1] == '%')
-				{
-					_putchar('%');
-					i++;
-					length_full++;
-					continue;
-				}
-				f_print = RCL(format[i + 1]);
-				if (f_print == NULL && format[i + 1])
-				{
-					_putchar(format[i]);
-					_putchar(format[i + 1]);
-					length_full += 2;
-					i++;
-					continue;
-				}
-				length_full += f_print(arg_list);
-				i++;
-				continue;
-			}
-			else if (format[i] == '%')
-				return (-1);
-			_putchar(format[i]);
-			length_full++;
-		}
-	}
-	else
+	if (!format)
 		return (-1);
-	return (length_full);
+
+	va_start(args, format);
+
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			format++;
+			if (!*format)
+			{
+				va_end(args);
+				return (-1);
+			}
+			count += handle_format(*format, args);
+		}
+		else
+		{
+			count += _putchar(*format);
+		}
+		format++;
+	}
+	va_end(args);
+
+	return (count);
 }
 
