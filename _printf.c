@@ -32,31 +32,6 @@ int print_string(char *s)
 }
 
 /**
- * print_number - Prints an integer to stdout
- * @n: Integer to print
- * Return: Number of characters printed
- */
-int print_number(int n)
-{
-    int len = 0;
-    unsigned int num;
-
-    if (n < 0)
-    {
-        len += _putchar('-');
-        num = -n;
-    }
-    else
-        num = n;
-
-    if (num / 10)
-        len += print_number(num / 10);
-
-    len += _putchar((num % 10) + '0');
-    return (len);
-}
-
-/**
  * handle_format - Handles format specifiers
  * @format: Format specifier
  * @args: List of arguments
@@ -78,10 +53,6 @@ int handle_format(const char format, va_list args)
     case '%':
         count += _putchar('%');
         break;
-    case 'd':
-    case 'i':
-        count += print_number(va_arg(args, int));
-        break;
     default:
         count += _putchar('%');
         count += _putchar(format);
@@ -91,7 +62,7 @@ int handle_format(const char format, va_list args)
 }
 
 /**
- * _printf - Custom printf function
+ * _printf - Custom printf function (task 0)
  * @format: Format string
  *
  * Return: Number of characters printed
@@ -111,7 +82,7 @@ int _printf(const char *format, ...)
         if (*format == '%')
         {
             format++;
-            if (!*format)  /* string sonunda % varsa, heç nə çap et */
+            if (!*format)  /* String sonunda % varsa, heç nə çap etmir */
                 break;
             count += handle_format(*format, args);
         }

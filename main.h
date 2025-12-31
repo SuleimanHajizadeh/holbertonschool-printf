@@ -4,9 +4,14 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-/* Task 0 funksiyaları */
+/* _printf function */
 int _printf(const char *format, ...);
-int print_char(char c);
+
+/* Format handler */
+int handle_format(const char format, va_list args);
+
+/* Output functions */
+int _putchar(char c);
 int print_string(char *s);
 
 #endif /* MAIN_H */
