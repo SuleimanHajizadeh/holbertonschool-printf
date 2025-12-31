@@ -51,8 +51,8 @@ int _printf(const char *format, ...)
         if (format[i] == '%')
         {
             i++;
-            if (!format[i])
-                break;  /* End of string after '%' */
+            if (!format[i])  /* string sonunda % varsa, heç nə çap et */
+                break;
 
             if (format[i] == 'c')
                 len += print_char(va_arg(args, int));
