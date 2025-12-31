@@ -1,68 +1,88 @@
-#include <stdarg.h>
-#include <unistd.h>
 #include "main.h"
 
 /**
- * _printf - prints formatted output
+ * print_char - çap edir bir xarakteri
+ * @c: çap ediləcək xarakter
+ * Return: çap edilmiş xarakter sayı (1)
+ */
+int print_char(char c)
+{
+    return write(1, &c, 1);
+}
+
+/**
+ * print_string - çap edir stringi
+ * @s: string
+ * Return: çap edilmiş xarakter sayı
+ */
+int print_string(char *s)
+{
+    int count = 0;
+
+    if (!s)
+        s = "(null)"; /* NULL pointer üçün */
+
+    while (*s)
+    {
+        write(1, s, 1);
+        s++;
+        count++;
+    }
+
+    return count;
+}
+
+/**
+ * _printf - əsas printf funksiyası
  * @format: format string
- *
- * Return: number of characters printed
+ * Return: çap edilmiş xarakterlərin sayı
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, count = 0;
-	char c;
-	char *s;
+    va_list args;
+    int count = 0;
+    char *str;
+    char c;
 
-	if (!format)
-		return (-1);
+    if (!format)
+        return (-1);
 
-	va_start(args, format);
+    va_start(args, format);
 
-	while (format[i])
-	{
-		if (format[i] != '%')
-		{
-			write(1, &format[i], 1);
-			count++;
-		}
-		else
-		{
-			i++;
-			if (format[i] == 'c')
-			{
-				c = (char)va_arg(args, int);
-				write(1, &c, 1);
-				count++;
-			}
-			else if (format[i] == 's')
-			{
-				s = va_arg(args, char *);
-				if (!s)
-					s = "(null)";
-				while (*s)
-				{
-					write(1, s, 1);
-					s++;
-					count++;
-				}
-			}
-			else if (format[i] == '%')
-			{
-				write(1, "%", 1);
-				count++;
-			}
-			else
-			{
-				write(1, "%", 1);
-				write(1, &format[i], 1);
-				count += 2;
-			}
-		}
-		i++;
-	}
+    while (*format)
+    {
+        if (*format == '%')
+        {
+            format++; /* növbəti simvola keç */
+            if (*format == 'c')
+            {
+                c = va_arg(args, int);
+                count += print_char(c);
+            }
+            else if (*format == 's')
+            {
+                str = va_arg(args, char *);
+                count += print_string(str);
+            }
+            else if (*format == '%')
+            {
+                count += print_char('%');
+            }
+            else
+            {
+                /* tanınmayan format üçün, sadəcə % və simvolu çap et */
+                count += print_char('%');
+                count += print_char(*format);
+            }
+        }
+        else
+        {
+            count += print_char(*format);
+        }
+        format++;
+    }
 
-	va_end(args);
-	return (count);
+    va_end(args);
+    return count;
 }
+
