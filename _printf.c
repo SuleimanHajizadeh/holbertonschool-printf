@@ -1,98 +1,88 @@
 #include "main.h"
 
 /**
- * _putchar - writes a character to stdout
- * @c: character to print
- *
- * Return: 1
+ * print_char - çap edir bir xarakteri
+ * @c: çap ediləcək xarakter
+ * Return: çap edilmiş xarakter sayı (1)
  */
-int _putchar(char c)
+int print_char(char c)
 {
-        return (write(1, &c, 1));
+    return write(1, &c, 1);
 }
 
 /**
- * print_string - prints a string
- * @s: string to print
- *
- * Return: number of characters printed
+ * print_string - çap edir stringi
+ * @s: string
+ * Return: çap edilmiş xarakter sayı
  */
 int print_string(char *s)
 {
-        int len = 0;
+    int count = 0;
 
-        if (!s)
-                s = "(null)";
+    if (!s)
+        s = "(null)"; /* NULL pointer üçün */
 
-        while (s[len])
-        {
-                _putchar(s[len]);
-                len++;
-        }
-        return (len);
+    while (*s)
+    {
+        write(1, s, 1);
+        s++;
+        count++;
+    }
+
+    return count;
 }
 
 /**
- * handle_format - handles format specifiers
- * @format: format character
- * @args: argument list
- *
- * Return: number of characters printed
- */
-int handle_format(const char format, va_list args)
-{
-        int count = 0;
-
-        if (format == 'c')
-                count += _putchar(va_arg(args, int));
-        else if (format == 's')
-                count += print_string(va_arg(args, char *));
-        else if (format == '%')
-                count += _putchar('%');
-        else
-        {
-                count += _putchar('%');
-                count += _putchar(format);
-        }
-        return (count);
-}
-
-/**
- * _printf - custom printf function (Task 0)
+ * _printf - əsas printf funksiyası
  * @format: format string
- *
- * Return: number of characters printed, or -1 on error
+ * Return: çap edilmiş xarakterlərin sayı
  */
 int _printf(const char *format, ...)
 {
-        int count = 0;
-        va_list args;
+    va_list args;
+    int count = 0;
+    char *str;
+    char c;
 
-        if (!format)
-                return (-1);
+    if (!format)
+        return (-1);
 
-        va_start(args, format);
+    va_start(args, format);
 
-        while (*format)
+    while (*format)
+    {
+        if (*format == '%')
         {
-                if (*format == '%')
-                {
-                        format++;
-                        if (!*format)
-                        {
-                                va_end(args);
-                                return (-1);
-                        }
-                        count += handle_format(*format, args);
-                }
-                else
-                {
-                        count += _putchar(*format);
-                }
-                format++;
+            format++; /* növbəti simvola keç */
+            if (*format == 'c')
+            {
+                c = va_arg(args, int);
+                count += print_char(c);
+            }
+            else if (*format == 's')
+            {
+                str = va_arg(args, char *);
+                count += print_string(str);
+            }
+            else if (*format == '%')
+            {
+                count += print_char('%');
+            }
+            else
+            {
+                /* tanınmayan format üçün, sadəcə % və simvolu çap et */
+                count += print_char('%');
+                count += print_char(*format);
+            }
         }
+        else
+        {
+            count += print_char(*format);
+        }
+        format++;
+    }
 
-        va_end(args);
-        return (count);
+    va_end(args);
+    return count;
 }
 
