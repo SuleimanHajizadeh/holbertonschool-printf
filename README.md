@@ -1,95 +1,49 @@
-this is readme file for printf tutorials
-<div align="center">
-    <h1>Printf Project</h1>
-    <img src="https://img.shields.io/github/repo-size/felipevcc/holbertonschool-printf?color=E97A6B&labelColor=1a1e29&style=for-the-badge">
-</div>
 
-## Description
+![PRINTF(1)](https://user-images.githubusercontent.com/97880395/178113082-7681e4c4-4cc0-4d03-b386-b4e50f6c8469.png)
 
-This project is a simulation of the printf function in C with its most important features, it was made in the software development program of [Holberton School](https://www.holbertonschool.com/).
 
-## Man page
+This README file have the fully description of our first group project in holberton-school, the project is about the implementation of printf function, it means we gonna write our own printf function. Below you'll find how printf works, and how to design the proper formatting specification for any occasion Prototype of printf function int _printf(const char *format, ...); Returns: the number of characters printed (excluding the null byte used to end output to strings
 
-The man page is a file wich explains in detail how the function works. If you want see a full explanation of this function you can run our man page this way:
+
+
+## Usage && Examples 
+Include main.h Call _printf, passing a formatted string with any format specifiers and optional arguments Upon success, it writes desired output to stdout Upon error, it returns -1 If NULL is passed in as a string argument, it prints (null) Format Specifier.
+
+To use the _printf function you simply need to compile all files .c including the header holberton.h with a main function.
+
+```c
+'#include "main.h"
+
+int main(void) { _printf("let's print hello world!");
+
+return (0); }
 ```
-$ man ./man_3_printf
+Compilation:
+
+```sh
+$ gcc *.c -o
 ```
-
-## Flowchart
-
-<img src="https://i.imgur.com/1J0VoyT.jpg" alt="flowchart">
-
-## Usage
-
-<details open>
-<summary> <strong> Syntaxis </strong> </summary>
-
-<br>
-
-To call the `_printf()` function the next code is required:
+Output: 
+```sh
+let's print hello world!
 ```
-#include "main.h"
+You can do much more, by combining specifiers like string or integer.
 
-int main() 
-{
-    _printf("string to print");
-    return (0);
-}
-```
-</details>
+## Files
+Below a list of the used files during project:
 
-<details open>
-<summary> <strong> Compilation </strong> </summary>
+- [_printf.c] - produces output according to a format.
+- [get_printf.c] - containing functions for specifiers _putchar.c.
+- [function.c] - containing function that writes a char to stdout.
+- [main.h] - header file with function prototypes and struct for specifiers.
 
-<br>
 
-To compile the program this command has to be executed:
-```
-$ make -f makefile
-```
-This will create a compilation file, its name is `main.out`. You can run this file in your terminal with the next command:
-```
-$ ./main.out
-```
-</details>
+## Authors
+**Mahdi Bani** 
++ (https://github.com/Mahdi3Bani)
 
-<details open>
-<summary> <strong> Parameters </strong> </summary>
+**Malek Mayeh** 
++  (https://github.com/malekje)
 
-<br>
-
-The next chart explains the detailed functionality of the parameters that the function accepts, respectively with each data type.
-
-| Indicator  | Data type | Description |
-| ------------- |:-------------:|:-------------:|
-| %d      | int    | Print an int as a signed decimal number  |
-| %i      | int    | Print an int as a signed decimal number  |
-| %u      | int    | Print an unsigned as an unsigned decimal number  |
-| %o      | int    | Print an unsigned as an unsigned octal number  |
-| %x      | int    | Hexadecimal notation (using lowercase letters a-f)  |
-| %X      | int    | Hexadecimal notation (using uppercase letters A-F)  |
-| %c      | int    | Convert an int to an unsigned character and print the resulting character  |
-| %s      | char * | Print a string pointed to by a char *  |
-| %p      | void * | Print a void * argument in hexadecimal (ANSI C only)  |
-| %%      | char   | Print a single % character  |
-| %b      | int    | Print a converted number to binary (base 2)  |
-| %r      | char * | Print a reversed string  |
-| %R      | char * | Converts a string to rot13 and prints it  |
-
-Here's an example of how does the parameters work in our `_printf()` function:
-``` 
-#include "main.h"
-
-int main()
-{
-    _printf("Cohort: %i", 19);
-    return (0);
-}
-```
-The output of this main function will be:
-```
-$ ./main.out
-Cohort: 19
-```
-
-</details>
+**Med Ali Krifa**
++  (https://github.com/MedAliKrifa)
