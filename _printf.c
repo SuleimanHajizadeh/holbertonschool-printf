@@ -1,48 +1,56 @@
 #include "main.h"
+
 /**
- * _printf - a typical printf
- * @format: is a character string
- * Return: the number of characters printed
+ * _printf - custom printf
+ * @format: format string
+ *
+ * Return: number of chars printed, -1 on error
  */
 int _printf(const char *format, ...)
 {
-
-	int i = 0, j = 0, a = 0;
 	va_list ap;
+	pf_buffer_t b;
+	pf_format_t f;
+	const char *p;
 
-	if (format == NULL || (strlen(format) == 1 && format[0] == '%'))
-	{
+	if (format == NULL)
 		return (-1);
-	}
+
+	pf_buf_init(&b);
 	va_start(ap, format);
-	while (format && format[i])
+
+	p = format;
+	while (*p != '\0')
 	{
-		if (format[i] != '%')
+		if (*p != '%')
 		{
-			putchar(format[i]);
-			j++;
-		}
-		if (format[i] == '%' && format[i + 1] != 'K' && format[i + 1] != '!')
-		{
-			a = get_printf(*(format + (i + 1)), ap);
-			if (a != 0)
-				j = j + a;
-			i = i + 2;
+			if (pf_buf_putc(&b, *p) == -1)
+				break;
+			p++;
 			continue;
-			if (*(format + (i + 1)) == '\0')
-			{
-				putchar(format[i]);
-				j++;
-			}
 		}
-		else if ((format[i] == '%' && format[i + 1] == 'K') ||
-		 (format[i] == '%' && format[i + 1] == '!'))
+
+		p++;
+		if (*p == '\0')
 		{
-			putchar(format[i]);
-			j++;
+			b.err = 1;
+			break;
 		}
-		i++;
+
+		if (pf_parse(&p, &f, &ap) == -1)
+		{
+			b.err = 1;
+			break;
+		}
+
+		if (pf_handle(&b, &f, &ap) == -1)
+			break;
 	}
+
 	va_end(ap);
-	return (j);
+
+	if (pf_buf_flush(&b) == -1 || b.err)
+		return (-1);
+
+	return (b.len);
 }
